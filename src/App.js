@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import Result from './components/Result/result';
 
 
 class App extends Component  {
@@ -9,12 +10,13 @@ class App extends Component  {
       error: null,
       operation: null,
       expression: null,
-      answer: null,
+      latestAnswer: null,
+      pastResults: []
     };
   }
 
   componentDidMount() {
-    this.setState({ error: null, operation: 'simplify' })
+    this.setState({ error: null, operation: 'simplify', pastResults: [] })
   }
   getResultFromNewtonAPI() {
     const expression = document.getElementById('expression').value;
@@ -34,7 +36,9 @@ class App extends Component  {
   }
 
   updateState(data) {
-    this.setState({expression: data.expression, answer: data.result});
+    this.state.pastResults.unshift(data);
+    const updatedResults = this.state.pastResults;
+    this.setState({expression: data.expression, latestAnswer: data.result, pastResults: updatedResults});
   }
 
   changeOperation(newOperation) {
@@ -42,6 +46,14 @@ class App extends Component  {
   }
 
   render() {
+    const results = this.state.pastResults.map((data) =>
+        <Result
+            operation={data.operation}
+            expression={data.expression}
+            answer={data.result}
+        />
+
+    );
     return (
         <div className='App'>
           <header>
@@ -88,18 +100,8 @@ class App extends Component  {
             </div>
 
             {/* Results section */}
-            <div className='row search m-4 border rounded p-4' >
-              <div className="col-lg-6 col-sm-12">
-                <div className="text-center">
-                  {'Expression: ' + this.state.expression}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-12">
-                <div className="text-center">
-                  {'Answer: ' + this.state.answer}
-                </div>
-              </div>
+            <div className="container results">
+              {results}
             </div>
           </div>
         </div>
