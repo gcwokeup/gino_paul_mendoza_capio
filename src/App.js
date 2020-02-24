@@ -46,11 +46,12 @@ class App extends Component  {
   }
 
   render() {
-    const results = this.state.pastResults.map((data) =>
+    const results = this.state.pastResults.map((data, index) =>
         <Result
             operation={data.operation}
             expression={data.expression}
             answer={data.result}
+            newest={index === 0}
         />
 
     );
