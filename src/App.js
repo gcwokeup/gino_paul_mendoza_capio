@@ -49,7 +49,8 @@ class App extends Component  {
           </header>
           <div className='container'>
             {/* operations available */}
-            <ul className='nav nav-pills nav-fill p-5'>
+            <h4 className='text-center'>Pick an operation</h4>
+            <ul className='nav nav-pills nav-fill border-bottom pb-4'>
               {/* TODO: Separate into own component */}
               <li className='nav-item m-2'>
                 <button id='simplify-btn' className={this.state.operation === 'simplify' ? 'btn btn-primary active' : 'btn btn-primary'}  onClick={() => {this.changeOperation('simplify')}}>
