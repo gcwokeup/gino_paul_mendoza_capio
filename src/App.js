@@ -29,8 +29,16 @@ class App extends Component  {
 
 // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    let db = firebase.firestore();
+    let snapshot = [];
+    db.collection("results").get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        snapshot.push(doc.data());
 
-    this.setState({ error: null, operation: 'simplify', pastResults: [] })
+      });
+    });
+    this.setState({ error: null, operation: 'simplify', pastResults: snapshot })
   }
   getResultFromNewtonAPI() {
     const expression = document.getElementById('expression').value;
@@ -73,7 +81,7 @@ class App extends Component  {
         <Result
             operation={data.operation}
             expression={data.expression}
-            answer={data.result}
+            answer={data.answer}
             newest={index === 0}
         />
 
